@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card" style="margin:50px 0">
+        <div class="card-header bg-primary text-white">Todoz</div>
+        <table>
+          <tr *ngFor="let todo of todos">
+            <td>
+              <input
+                type="checkbox"
+                [checked]="todo.complete"
+                (click)="markAsComplete(todo)"
+              />
+            </td>
+            <td>
+              <label
+                [ngStyle]="
+                  todo.complete
+                    ? { 'text-decoration': 'line-through' }
+                    : { 'text-decoration': 'None' }
+                "
+                *ngIf="todo.id !== editId || !buttonText"
+                >{{ todo.title }}</label
+              >
+
+              <input
+                type="text"
+                value="{{ todo.title }}"
+                *ngIf="todo.id === editId && buttonText"
+                [(ngModel)]="todo.title"
+                (keyup.enter) = "buttonText=!buttonText"
+                #updateFocus
+              />
+            </td>
+
+            <td>
+              <button
+                class="btn btn-success"
+                (click)="updateTodo(todo.id)"
+                [disabled]="todo.complete"
+              >
+                {{ buttonText && editId === todo.id ? "update" : "Edit" }}
+              </button>
+            </td>
+            <td>
+              <input
+                type="button"
+                value="Delete"
+                class="btn btn-danger"
+                [disabled]="todo.complete"
+                (click)="deleteTodo(todo.id)"
+              />
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          *ngIf="addTodoButton"
+          [(ngModel)]="newTodo.title"
+          (keyup.enter)="addTodoList()"
+          #addFocus
+        /><br />
+        <input
+          type="button"
+          value="Add"
+          class="btn btn-primary"
+          (click)="addButton()"
+        />
+      </div>
+    </div>
+  </div>
+</div>
